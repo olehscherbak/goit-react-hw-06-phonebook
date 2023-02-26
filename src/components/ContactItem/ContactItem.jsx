@@ -1,8 +1,12 @@
+import { useDispatch } from 'react-redux';
+
 import PropTypes from 'prop-types';
 import { GiRotaryPhone } from 'react-icons/gi';
 import css from './ContactItem.module.css';
+import { deleteContact } from 'redux/actions';
 
-export default function ContactItem({ id, name, number, deleteContact }) {
+export default function ContactItem({ id, name, number }) {
+  const dispatch = useDispatch();
   return (
     <li className={css.contactRow}>
       <span className={css.contactItem}>
@@ -15,7 +19,7 @@ export default function ContactItem({ id, name, number, deleteContact }) {
       <button
         type="button"
         className={css.deleteBtn}
-        onClick={() => deleteContact(id)}
+        onClick={() => dispatch(deleteContact(id))}
       >
         Delete
       </button>
@@ -27,5 +31,4 @@ ContactItem.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   number: PropTypes.string.isRequired,
-  deleteContact: PropTypes.func.isRequired,
 };

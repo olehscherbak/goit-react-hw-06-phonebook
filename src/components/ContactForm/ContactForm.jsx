@@ -1,28 +1,23 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import css from './ContactForm.module.css';
+import { addContact } from 'redux/actions';
 
-export default function ContactForm({ onSubmit }) {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-  const handleChange = evt => {
-    const { name, value } = evt.target;
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-      default:
-        return;
-    }
-  };
+export default function ContactForm() {
+  const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts);
+
   const handleSubmit = evt => {
     evt.preventDefault();
-    onSubmit(evt.target.name.value, evt.target.number.value);
-    setName('');
-    setNumber('');
+    const name = evt.target.name.value;
+    const number = evt.target.number.value;
+    if (contacts.some(contact => contact.name === name)) {
+      return toast.warn(`${name} is already in contacts`);
+    } else {
+      dispatch(addContact(name, number));
+    }
+    evt.target.reset();
   };
 
   return (
@@ -37,8 +32,6 @@ export default function ContactForm({ onSubmit }) {
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
-          onChange={handleChange}
-          value={name}
         />
       </label>
 
@@ -52,18 +45,13 @@ export default function ContactForm({ onSubmit }) {
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          onChange={handleChange}
-          value={number}
         />
       </label>
 
       <button type="submit" className={css.addBtn}>
         Add contact
       </button>
+      <ToastContainer />
     </form>
   );
 }
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};

@@ -1,20 +1,20 @@
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { filterChange } from 'redux/actions';
+
 import css from './Filter.module.css';
 
-export default function Filter({ onChange }) {
+export default function Filter() {
+  const dispatch = useDispatch();
+  const handleChange = e => {
+    dispatch(filterChange(e.target.value));
+  };
   return (
     <input
       type="text"
       name="filter"
       autoComplete="off"
       className={css.filter}
-      onChange={e => {
-        onChange(e.target.value);
-      }}
+      onChange={handleChange}
     />
   );
 }
-
-Filter.propTypes = {
-  onChange: PropTypes.func.isRequired,
-};
