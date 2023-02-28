@@ -24,6 +24,7 @@ export default function ContactForm() {
       dispatch(addContact(newContact));
     }
     evt.target.reset();
+    evt.target.name.focus();
   };
 
   return (
@@ -35,7 +36,7 @@ export default function ContactForm() {
           type="text"
           name="name"
           autoComplete="off"
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          pattern="^[a-zA-Zа-яА-ЯЇїЄєІіҐґ'’ʼ]+(([' -][a-zA-Zа-яА-ЯЇїЄєІіҐґ'’ʼ ])?[a-zA-Zа-яА-ЯЇїЄєІіҐґ'’ʼ]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
         />
